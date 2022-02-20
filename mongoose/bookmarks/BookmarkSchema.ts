@@ -1,3 +1,8 @@
+/**
+ * @file Defines the bookmark schema in the 
+ * bookmarks collection
+ */
+
 import mongoose, {Schema} from "mongoose";
 import Bookmark from "../../models/bookmarks/Bookmark";
 

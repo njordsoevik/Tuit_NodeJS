@@ -11,11 +11,11 @@
   * <ul>
   *     <li>GET /api/users/:uid/follows to retrieve all the users followed by a user
   *     </li>
-  *     <li>GET /api/users/:tid/follows to retrieve all users that followed a user
+  *     <li>GET /api/users/:uid/followers to retrieve all users that followed a user
   *     </li>
-  *     <li>POST /api/users/:uid/follows/:tid to record that a user follows a user
+  *     <li>POST /api/users/:uid/follows/:rid to record that a user follows a user
   *     </li>
-  *     <li>DELETE /api/users/:uid/unfollows/:tid to record that a user
+  *     <li>DELETE /api/users/:uid/unfollows/:rid to record that a user
   *     no longer follows a user</li>
   * </ul>
   * @property {FollowDao} followDao Singleton DAO implementing follows CRUD operations
@@ -35,10 +35,10 @@
          if(FollowController.followController === null) {
              FollowController.followController = new FollowController();
              app.get("/api/users/:uid/follows", FollowController.followController.findAllUsersFollowedByUser);
-             app.get("/api/users/:tid/follows", FollowController.followController.findAllUsersThatFollowUser);
-             app.post("/api/users/:uid/follows/:uid", FollowController.followController.userFollowsUser);
-             app.delete("/api/users/:uid/unfollows/:tid", FollowController.followController.userUnFollowsUser);
-             app.delete("/api/users/:uid/unfollows", FollowController.followController.userFollowsAllFollowers);
+             app.get("/api/users/:uid/followers", FollowController.followController.findAllUsersThatFollowUser);
+             app.post("/api/users/:uid/follows/:rid", FollowController.followController.userFollowsUser);
+             app.delete("/api/users/:uid/unfollows/:rid", FollowController.followController.userUnFollowsUser);
+             //app.post("/api/users/:uid/followers", FollowController.followController.userFollowsAllFollowers);
          }
          return FollowController.followController;
      }
@@ -53,7 +53,7 @@
       * body formatted as JSON arrays containing the user objects
       */
      findAllUsersThatFollowUser = (req: Request, res: Response) =>
-         FollowController.followDao.findAllUsersThatFollowUser(req.params.tid)
+         FollowController.followDao.findAllUsersThatFollowUser(req.params.uid)
              .then(follows => res.json(follows));
  
      /**
@@ -76,7 +76,7 @@
       * database
       */
      userFollowsUser = (req: Request, res: Response) =>
-         FollowController.followDao.userFollowsUser(req.params.uid, req.params.tid)
+         FollowController.followDao.userFollowsUser(req.params.uid, req.params.rid)
              .then(follows => res.json(follows));
  
      /**
@@ -87,7 +87,7 @@
       * on whether deleting the follows was successful or not
       */
       userUnFollowsUser = (req: Request, res: Response) =>
-         FollowController.followDao.userUnFollowsUser(req.params.uid, req.params.tid)
+         FollowController.followDao.userUnFollowsUser(req.params.uid, req.params.rid)
              .then(status => res.send(status));
 
      /**

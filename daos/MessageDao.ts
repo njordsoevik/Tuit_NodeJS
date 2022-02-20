@@ -18,8 +18,8 @@ export default class MessageDao implements MessageDaoI {
         MessageModel.find({userSent: uid});
     findAllMessagesToUser = async (sender: string, receiver: string): Promise<any> =>
         MessageModel.find({userSent: sender, userReceived: receiver});
-    userMessagesUser = async (sender: string, receiver: string): Promise<any> =>
-        MessageModel.create({userSent: sender, userReceived: receiver});
+    userMessagesUser = async (sender: string, receiver: string, message: Message): Promise<Message> =>
+        MessageModel.create({...message, userSent: sender, userReceived: receiver});
     userDeletesAllMessagesToUser = async (sender: string, receiver: string): Promise<any> =>
         MessageModel.deleteMany({userSent: sender, userReceived: receiver});
     deleteMessage = async (mid: string): Promise<any> =>

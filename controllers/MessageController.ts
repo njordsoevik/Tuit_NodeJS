@@ -4,19 +4,23 @@
  import {Express, Request, Response} from "express";
  import MessageDao from "../daos/MessageDao";
  import MessageControllerI from "../interfaces/MessageControllerI";
- 
+ import Message from "../models/messages/Message"
  /**
   * @class TuitController Implements RESTful Web service API for messages resource.
   * Defines the messageing HTTP endpoints:
   * <ul>
-  *     <li>GET /api/users/:uid/messages to retrieve all the users messageed by a user
+  *     <li>GET /api/users/:uid/messages/received to retrieve all the messages sent to a user
   *     </li>
-  *     <li>GET /api/users/:tid/messages to retrieve all users that messageed a user
+  *     <li>GET /api/users/:uid/messages/sent to retrieve all the messages sent by a user
   *     </li>
-  *     <li>POST /api/users/:uid/messages/:tid to record that a user messages a user
+  *     <li>GET /api/users/:uid/messages/:rid to retrieve messages that a user sent to another user
   *     </li>
-  *     <li>DELETE /api/users/:uid/unmessages/:tid to record that a user
-  *     no longer messages a user</li>
+  *     <li>POST /api/users/:uid/messages/:rid to record that a user messages a user
+  *     </li>
+  *     <li>DELETE /api/users/:uid/messages/:rid to record that a user
+  *     deletes all messages to a user</li>
+  *     <li>DELETE /api/messages/:mid to record that a user
+  *     deletes all of their sent messages</li>
   * </ul>
   * @property {MessageDao} messageDao Singleton DAO implementing messages CRUD operations
   * @property {MessageController} MessageController Singleton controller implementing
@@ -39,7 +43,7 @@
              app.get("/api/users/:uid/messages/:rid", MessageController.messageController.findAllMessagesToUser);
              app.post("/api/users/:uid/messages/:rid", MessageController.messageController.userMessagesUser);
              app.delete("/api/messages/:mid", MessageController.messageController.deleteMessage);
-             app.delete("/api/users/:uid/messages/:uid", MessageController.messageController.userDeletesAllMessagesToUser);
+             app.delete("/api/users/:uid/messages/:rid", MessageController.messageController.userDeletesAllMessagesToUser);
          }
          return MessageController.messageController;
      }
@@ -88,9 +92,12 @@
       * database
       */
      userMessagesUser = (req: Request, res: Response) =>
-         MessageController.messageDao.userMessagesUser(req.params.uid, req.params.rid)
-             .then(messages => res.json(messages));
- 
+         MessageController.messageDao.userMessagesUser(req.params.uid, req.params.rid, req.body)
+             .then((message: Message) => res.json(message));
+            //  createTuitByUser = (req: Request, res: Response) =>
+            //  TuitController.tuitDao.createTuitByUser(req.params.uid, req.body)
+            //      .then((tuit: Tuit) => res.json(tuit));
+     
      /**
       * @param {Request} req Represents request from client, including the
       * path parameters uid and tid representing the user that is unmessageing

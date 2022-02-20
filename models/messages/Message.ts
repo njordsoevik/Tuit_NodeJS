@@ -15,5 +15,6 @@
 export default interface Message {
     userSent: User,
     userReceived: User,
-    message: string
+    message: string,
+    sentOn: Date
 };

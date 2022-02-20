@@ -13,5 +13,5 @@
 
 export default interface Bookmark {
     follower: User,
-    followee: User,
+    followee: User
 };

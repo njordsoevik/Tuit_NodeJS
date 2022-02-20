@@ -17,6 +17,8 @@
   *     </li>
   *     <li>DELETE /api/users/:uid/unbookmarks/:tid to record that a user
   *     no longer bookmarks a tuit</li>
+  *     <li>DELETE /api/users/:uid/unbookmarks to record that a user
+  *     no longer bookmarks any tuit</li>  * 
   * </ul>
   * @property {BookmarkDao} bookmarkDao Singleton DAO implementing bookmarks CRUD operations
   * @property {BookmarkController} BookmarkController Singleton controller implementing

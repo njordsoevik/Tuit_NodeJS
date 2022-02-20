@@ -1,3 +1,8 @@
+/**
+ * @file Defines the like schema in the 
+ * likes collection
+ */
+
 import mongoose, {Schema} from "mongoose";
 import Like from "../../models/likes/Like";
 
